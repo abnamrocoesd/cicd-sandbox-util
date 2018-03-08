@@ -4,11 +4,11 @@ import (
 	"../model"
 	"../util"
 	"fmt"
-	"strings"
-	"net/url"
-	"net/http"
-	"os"
 	"io/ioutil"
+	"net/http"
+	"net/url"
+	"os"
+	"strings"
 )
 
 func RetrieveAPIToken(sonarQubeConfig model.SonarQubeConfig) {

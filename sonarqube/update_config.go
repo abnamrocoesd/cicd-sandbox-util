@@ -1,14 +1,14 @@
 package sonarqube
 
 import (
-	"fmt"
-	"strings"
-	"net/url"
 	"../model"
 	"../util"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"net/url"
+	"strings"
 )
 
 func UpdateSonarQubeConfig(openidcConfig string, sonarQubeConfig model.SonarQubeConfig) {

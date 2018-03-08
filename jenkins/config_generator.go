@@ -1,11 +1,11 @@
 package jenkins
 
 import (
-	"encoding/json"
-	"log"
-	"fmt"
-	"../util"
 	"../model"
+	"../util"
+	"encoding/json"
+	"fmt"
+	"log"
 )
 
 func KeycloakConfig(hostname string, port string, securityRealm string) {
