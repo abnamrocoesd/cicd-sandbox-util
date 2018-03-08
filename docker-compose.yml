@@ -1,0 +1,22 @@
+version: "2.3"
+
+services:
+  util:
+    image: cicd-sandbox-util:${UTILTAG:-0.1.0}
+    build: .
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: cicd-util --help
+
+  server:
+    image: cicd-sandbox-util:${UTILTAG:-0.1.0}
+    ports:
+      - 7777:7777
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "EXTERNAL_HOSTNAME=${HOSTNAME:-localhost}"
+    command: cicd-util -action serve
+
+# - EXTERNAL_HOSTNAME=${hostname:-localhost} for windows
+
