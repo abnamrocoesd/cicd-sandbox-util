@@ -6,3 +6,4 @@ gofmt -s -w -l jenkins/*.*
 gofmt -s -w -l dockerprobe/*.*
 gofmt -s -w -l sonarqube/*.*
 gofmt -s -w -l util/*.*
+gofmt -s -w -l nexus/*.*

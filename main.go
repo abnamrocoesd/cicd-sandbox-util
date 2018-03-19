@@ -34,11 +34,20 @@ func main() {
 	sonarQubeTokenName := flag.String("sonarQubeTokenName", "ci", "The tokenName for the API token for SonarQube (for example, for Jenkins)")
 	sonarQubeUser := flag.String("sonarQubeUser", "admin", "The username for SonarQube API")
 	sonarQubePass := flag.String("sonarQubePass", "admin", "The password for SonarQube API")
+	jenkinsUser := flag.String("jenkinsUser", "barbossa", "The username for Jenkins API")
+	jenkinsToken := flag.String("jenkinsToken", "JENKINS_ROCKS", "The user's token for Jenkins API")
+	jenkinsHost := flag.String("jenkinsHost", "localhost", "The host for Jenkins API")
+	jenkinsPort := flag.String("jenkinsPort :=", "8282", "The port for Jenkins API")
+	jenkinsContextRoot := flag.String("jenkinsContextRoot :=", "/jenkins", "The context root of the Jenkins")
+	jenkinsJobUrl := flag.String("jenkinsJobUrl", "/configs/sonar", "The url of the jenkins job to trigger")
+	jenkinsJobParams := flag.String("jenkinsJobParams", "", "comma delimited key:value pairs")
+
 	serverPort := flag.String("serverPort", "7777", "The Port number of the webserver when action is 'serve'")
 	action := flag.String("action", "generate-config", `
 		- generate-config: Generate configuration files such as keycloak configuration for Jenkins
 		- sonar-init: initialize the configuration of SonarQube, such as the keycloak configuration
   		- sonar-token: generates a token for ci systems (such as jenkins) in SonarQube
+		- jenkins-sonar-token: generates a SonarQube security token (internalHost/Port...) and triggers a configuration job in Jenkins 
 		- sonar-token-list: lists sonar tokens
 		- list-docker: list docker containers part of this stack
 		- serve: serve as web server serving a html page with the docker container listing (same source as list-docker)
@@ -56,6 +65,16 @@ func main() {
 		SonarQubeUser:    *sonarQubeUser,
 		SonarQubePass:    *sonarQubePass,
 		APITokenName:     *sonarQubeTokenName,
+	}
+
+	jenkinsJobConfig := model.JenkinsJobConfig{
+		User:        *jenkinsUser,
+		Token:       *jenkinsToken,
+		Host:        *jenkinsHost,
+		Port:        *jenkinsPort,
+		ContextRoot: *jenkinsContextRoot,
+		JobUrl:      *jenkinsJobUrl,
+		JobParams:   *jenkinsJobParams,
 	}
 
 	// add functions
@@ -95,6 +114,28 @@ func main() {
 		printSonarQubeConfig(sonarQubeConfig)
 		sonarqube.RetrieveAPIToken(sonarQubeConfig)
 		fmt.Printf("== Generate CI token in Sonarqube -- end\n-----------------\n")
+	case "jenkins-sonar-token":
+		fmt.Printf("== Configure Sonarqube in Jenkins -- start\n-----------------\n")
+		printSonarQubeConfig(sonarQubeConfig)
+		printJenkinsConfig(jenkinsJobConfig)
+		tokens := sonarqube.RetrieveAPIToken(sonarQubeConfig)
+		fmt.Printf("  > Found %d tokens\n", len(tokens.UserTokens))
+		tokenExists := false
+		for _, userToken := range tokens.UserTokens {
+			if userToken.Name == *sonarQubeTokenName {
+				tokenExists = true
+			}
+		}
+		if tokenExists {
+			fmt.Println(" > Token already exists, we cannot retrieve it, so not updating Jenkins")
+		} else {
+			fmt.Println(" > Token does not exist yet, we will create it")
+			// TODO: switch back to actual token
+			//token := model.ApiToken{Token: "DUMMY"}
+			token := sonarqube.GenerateAPIToken(sonarQubeConfig)
+			jenkins.SonarConfiguration(sonarQubeConfig, jenkinsJobConfig, token)
+		}
+		fmt.Printf("== Configure Sonarqube in Jenkins -- end\n-----------------\n")
 	case "list-docker":
 		labelFilter := fmt.Sprintf("%s=%s", *labelPrefix+util.LabelNamespace, *namespace)
 		containersList, err := dockerprobe.ContainerList(labelFilter, *dockerHost)
@@ -151,10 +192,22 @@ func main() {
 		}
 		fmt.Println("> Shut down app")
 	default:
-		panic(fmt.Sprintf("Action '%v' not recognized\n", *action))
+		panic(fmt.Sprintf(
+			"Action '%v' not recognized\n", *action))
 	}
 	fmt.Printf("-----------------\n")
 }
+func printJenkinsConfig(jenkinsJobConfig model.JenkinsJobConfig) {
+	fmt.Printf("======= Jenkins Job configuration\n")
+	fmt.Printf("== User=%s\n", jenkinsJobConfig.User)
+	fmt.Printf("== Host=%s\n", jenkinsJobConfig.Host)
+	fmt.Printf("== Port=%s\n", jenkinsJobConfig.Port)
+	fmt.Printf("== ContextRoot=%s\n", jenkinsJobConfig.ContextRoot)
+	fmt.Printf("== JobUrl=%s\n", jenkinsJobConfig.JobUrl)
+	fmt.Printf("== JobParams=%s\n", jenkinsJobConfig.JobParams)
+	fmt.Printf("======= Jenkins Job configuration\n")
+}
+
 func printSonarQubeConfig(sonarQubeConfig model.SonarQubeConfig) {
 	fmt.Printf("======= SonarQube configuration\n")
 	fmt.Printf("== KeycloakClientId=%s\n", sonarQubeConfig.KeycloakClientId)
