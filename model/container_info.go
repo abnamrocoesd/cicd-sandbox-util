@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// ContainerInfo
+// ContainerInfo information about the docker container we want to track.
 type ContainerInfo struct {
 	Name          string   `json:"Name"`
 	Description   string   `json:"Description"`

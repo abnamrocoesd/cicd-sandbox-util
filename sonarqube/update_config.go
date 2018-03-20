@@ -11,6 +11,7 @@ import (
 	"strings"
 )
 
+// UpdateSonarQubeConfig updates Keycloak configuration and its requirements (such as serverBaseURL).
 func UpdateSonarQubeConfig(openidcConfig string, sonarQubeConfig model.SonarQubeConfig) {
 	serverBaseUrl := fmt.Sprintf("http://%v:%v%v", sonarQubeConfig.ExternalHostname, sonarQubeConfig.ExternalPort, sonarQubeConfig.ContextRoot)
 	UpdateSonarQubeSettings("sonar.core.serverBaseURL", serverBaseUrl, sonarQubeConfig)
@@ -21,6 +22,7 @@ func UpdateSonarQubeConfig(openidcConfig string, sonarQubeConfig model.SonarQube
 	UpdateSonarQubeSettings("sonar.auth.oidc.providerConfiguration", openidcConfig, sonarQubeConfig)
 }
 
+// UpdateSonarQubeSettings calling the SonarQube settings API for updating specific settings.
 func UpdateSonarQubeSettings(key string, value string, sonarQubeConfig model.SonarQubeConfig) {
 	fmt.Printf(">> Updating SonarQube settings: key=%v, value=%v\n", key, value)
 	rawUrl := util.ReplaceHostnameAndPort("http://XXX:YYY/ZZZ/api/settings/set", sonarQubeConfig.InternalHostname, sonarQubeConfig.InternalPort)
@@ -51,8 +53,10 @@ func UpdateSonarQubeSettings(key string, value string, sonarQubeConfig model.Son
 
 }
 
+// GenerateSonarKeycloakConfig generates the JSON string of Realm configuration of Keycloak.
+// The reason we do this ourselves is because Keycloak will have its own relative information,
+// which might not work due to the Docker Compose setup with Localhost working externally on some systems but not on others (Docker for Windows).
 func GenerateSonarKeycloakConfig(externalKeycloakHostname string, keycloakPort string, sonarQubeConfig model.SonarQubeConfig) string {
-	// TODO: replace realm with flag input
 	issuer := util.ReplaceHostnamePortAndRealm("http://XXX:YYY/auth/realms/ZZZ", externalKeycloakHostname, keycloakPort, sonarQubeConfig.SecurityRealm)
 	authorizationEndpoint := util.ReplaceHostnamePortAndRealm("http://XXX:YYY/auth/realms/ZZZ/protocol/openid-connect/auth", externalKeycloakHostname, keycloakPort, sonarQubeConfig.SecurityRealm)
 	tokenEndpoint := util.ReplaceHostnamePortAndRealm("http://XXX:YYY/auth/realms/ZZZ/protocol/openid-connect/token", externalKeycloakHostname, keycloakPort, sonarQubeConfig.SecurityRealm)

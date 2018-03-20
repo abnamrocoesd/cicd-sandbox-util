@@ -12,7 +12,8 @@ import (
 	"strings"
 )
 
-func RetrieveAPIToken(sonarQubeConfig model.SonarQubeConfig) model.ApiTokens {
+// RetrieveAPITokens will retrieve the existing API tokens for the user for which the credentials are supplied.
+func RetrieveAPITokens(sonarQubeConfig model.SonarQubeConfig) model.ApiTokens {
 	fmt.Printf(">> Retrieving SonarQube API Tokens\n")
 	tokens := model.ApiTokens{}
 	rawUrl := util.ReplaceHostnameAndPort("http://XXX:YYY/ZZZ/api/user_tokens/search", sonarQubeConfig.InternalHostname, sonarQubeConfig.InternalPort)
@@ -50,6 +51,7 @@ func RetrieveAPIToken(sonarQubeConfig model.SonarQubeConfig) model.ApiTokens {
 	return tokens
 }
 
+// GenerateAPIToken will attempt to generate a SonarQube API token.
 func GenerateAPIToken(sonarQubeConfig model.SonarQubeConfig) model.ApiToken {
 	token := model.ApiToken{}
 

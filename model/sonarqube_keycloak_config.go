@@ -1,5 +1,9 @@
 package model
 
+// SonarKeycloakConfig is the complete JSON configuration required for SonarQube's Keycloak configuration.
+// We could also retrieve this from the Keycloak instance we want to configure SonarQube for.
+// However, that would probably create problems due to the difference between internal and external host names required
+//   by the Docker Compose, especially on Windows machines with Docker for Windows.
 type SonarKeycloakConfig struct {
 	Issuer                                     string   `json:"issuer"`
 	AuthorizationEndpoint                      string   `json:"authorization_endpoint"`

@@ -112,13 +112,13 @@ func main() {
 	case "sonar-token-list":
 		fmt.Printf("== Generate CI token in Sonarqube -- start\n-----------------\n")
 		printSonarQubeConfig(sonarQubeConfig)
-		sonarqube.RetrieveAPIToken(sonarQubeConfig)
+		sonarqube.RetrieveAPITokens(sonarQubeConfig)
 		fmt.Printf("== Generate CI token in Sonarqube -- end\n-----------------\n")
 	case "jenkins-sonar-token":
 		fmt.Printf("== Configure Sonarqube in Jenkins -- start\n-----------------\n")
 		printSonarQubeConfig(sonarQubeConfig)
 		printJenkinsConfig(jenkinsJobConfig)
-		tokens := sonarqube.RetrieveAPIToken(sonarQubeConfig)
+		tokens := sonarqube.RetrieveAPITokens(sonarQubeConfig)
 		fmt.Printf("  > Found %d tokens\n", len(tokens.UserTokens))
 		tokenExists := false
 		for _, userToken := range tokens.UserTokens {
@@ -130,8 +130,6 @@ func main() {
 			fmt.Println(" > Token already exists, we cannot retrieve it, so not updating Jenkins")
 		} else {
 			fmt.Println(" > Token does not exist yet, we will create it")
-			// TODO: switch back to actual token
-			//token := model.ApiToken{Token: "DUMMY"}
 			token := sonarqube.GenerateAPIToken(sonarQubeConfig)
 			jenkins.SonarConfiguration(sonarQubeConfig, jenkinsJobConfig, token)
 		}
@@ -197,6 +195,8 @@ func main() {
 	}
 	fmt.Printf("-----------------\n")
 }
+
+// printJenkinsConfig prints the basic information captured for Jenkins.
 func printJenkinsConfig(jenkinsJobConfig model.JenkinsJobConfig) {
 	fmt.Printf("======= Jenkins Job configuration\n")
 	fmt.Printf("== User=%s\n", jenkinsJobConfig.User)
@@ -208,6 +208,7 @@ func printJenkinsConfig(jenkinsJobConfig model.JenkinsJobConfig) {
 	fmt.Printf("======= Jenkins Job configuration\n")
 }
 
+// printSonarQubeConfig prints the basic information captured for SonarQube.
 func printSonarQubeConfig(sonarQubeConfig model.SonarQubeConfig) {
 	fmt.Printf("======= SonarQube configuration\n")
 	fmt.Printf("== KeycloakClientId=%s\n", sonarQubeConfig.KeycloakClientId)
