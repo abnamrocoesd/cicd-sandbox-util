@@ -1,0 +1,52 @@
+# Meta
+site_name: CICD Sandbox Utility
+site_url: https://abnamrocoesd.github.io/cicd-sandbox-util
+# Copyright
+copyright: 'Copyright &copy; 2018 ABN AMRO CoE SD'
+repo_name: 'abnamrocoesd/cicd-sandbox-util'
+repo_url: 'https://github.com/abnamrocoesd/cicd-sandbox-util'
+
+docs_dir: 'docs'
+
+# Pages
+pages:
+- Home: index.md
+- Tool Configuration: tool-configurations.md
+- Service Listing: service-listing.md
+
+# Theme
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  palette:
+    primary: 'teal'
+    accent: 'amber'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      linenums: true
+      guess_lang: false
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.critic
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
