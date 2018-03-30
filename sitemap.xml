@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
+    <url>
+     <loc>https://abnamrocoesd.github.io/cicd-sandbox-util/</loc>
+     <lastmod>2018-03-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://abnamrocoesd.github.io/cicd-sandbox-util/tool-configurations/</loc>
+     <lastmod>2018-03-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://abnamrocoesd.github.io/cicd-sandbox-util/service-listing/</loc>
+     <lastmod>2018-03-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+</urlset>

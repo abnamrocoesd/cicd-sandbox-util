@@ -1,0 +1,74 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "CICD Sandbox Util\n\n\nThe CICD Sandbox Utility is a tool that can help with automating a Continuous Integration (CI) and/or Continuous Deliver (CD) environment.\n\n\nIt is aimed at being used with such a sandbox created with \nDocker Compose\n (such as \nCIDC\n). \n\n\nAlthough there are better alternatives such as doing so with \nDocker Swarm (Viktor Farcic)\n, \nKubernetes (fabric8)\n or with \nOpenShift's MiniShift\n.\n\n\nThe goal of this is to support a local sandbox environment that is very easy to setup on windows, mac or linux.\nThe above mentioned alternatives do not satisfy this requirement - or at least not to the degree we're interested in.\n\n\nWhat does it do\n\n\nCurrently it is capable of doing two things:\n\n\n\n\nTool Configuration\n: help you automate your tool configurations. Including, but not limited to:\n\n\nconfigure Keycloak in SonarQube\n\n\nconfigure a SonarQube API token in Jenkins\n\n\n\n\n\n\nService Listing\n: this allows you to create a home page listing a set of services started with docker compose and their correct URL. Taking into account things such as ports, contextroots.\n\n\n\n\nFor all the actions it does, you can run the following:\n\n\n1\ndocker run --rm --name util-temp abnamrocoesd/cicd-sandbox-util cicd-util --help\n\n\n\n\n\n\nHow to use\n\n\n\n\nbuild with go\n\n\nrun with docker", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#cicd-sandbox-util", 
+            "text": "The CICD Sandbox Utility is a tool that can help with automating a Continuous Integration (CI) and/or Continuous Deliver (CD) environment.  It is aimed at being used with such a sandbox created with  Docker Compose  (such as  CIDC ).   Although there are better alternatives such as doing so with  Docker Swarm (Viktor Farcic) ,  Kubernetes (fabric8)  or with  OpenShift's MiniShift .  The goal of this is to support a local sandbox environment that is very easy to setup on windows, mac or linux.\nThe above mentioned alternatives do not satisfy this requirement - or at least not to the degree we're interested in.", 
+            "title": "CICD Sandbox Util"
+        }, 
+        {
+            "location": "/#what-does-it-do", 
+            "text": "Currently it is capable of doing two things:   Tool Configuration : help you automate your tool configurations. Including, but not limited to:  configure Keycloak in SonarQube  configure a SonarQube API token in Jenkins    Service Listing : this allows you to create a home page listing a set of services started with docker compose and their correct URL. Taking into account things such as ports, contextroots.   For all the actions it does, you can run the following:  1 docker run --rm --name util-temp abnamrocoesd/cicd-sandbox-util cicd-util --help", 
+            "title": "What does it do"
+        }, 
+        {
+            "location": "/#how-to-use", 
+            "text": "build with go  run with docker", 
+            "title": "How to use"
+        }, 
+        {
+            "location": "/tool-configurations/", 
+            "text": "Tool configurations\n\n\n\n\nsonar-init: initialize the configuration of SonarQube, such as the keycloak configuration\n\n\nsonar-token: generates a token for ci systems (such as jenkins) in SonarQube\n\n\njenkins-sonar-token: generates a SonarQube security token (internalHost/Port...) and triggers a configuration job in Jenkins \n\n\nsonar-token-list: lists sonar tokens\n\n\n\n\nSonarQube\n\n\nJenkins", 
+            "title": "Tool Configuration"
+        }, 
+        {
+            "location": "/tool-configurations/#tool-configurations", 
+            "text": "sonar-init: initialize the configuration of SonarQube, such as the keycloak configuration  sonar-token: generates a token for ci systems (such as jenkins) in SonarQube  jenkins-sonar-token: generates a SonarQube security token (internalHost/Port...) and triggers a configuration job in Jenkins   sonar-token-list: lists sonar tokens", 
+            "title": "Tool configurations"
+        }, 
+        {
+            "location": "/tool-configurations/#sonarqube", 
+            "text": "", 
+            "title": "SonarQube"
+        }, 
+        {
+            "location": "/tool-configurations/#jenkins", 
+            "text": "", 
+            "title": "Jenkins"
+        }, 
+        {
+            "location": "/service-listing/", 
+            "text": "Service Listing\n\n\nThe service listing is there to help you visualize the running containers of your CICD sandbox.\n\n\nIt can do this in two ways, print the listing or host the listing as a html page.\n\n\nPrint Listing\n\n\n1\n2\n3\n4\n5\ndocker run --rm --name util-temp \n\\\n\n   -v /var/run/docker.sock:/var/run/docker.sock \n\\\n\n   abnamrocoesd/cicd-sandbox-util \n\\\n\n   cicd-util --action list-docker --namespace cidc\n\\\n\n   --labelPrefix com.github.joostvdg.\n\n\n\n\n\n\nThis will result in the following response:\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n==\n \nEXTERNAL_HOSTNAME\n=\n\n\n==\n Hostname to use: \n4189e58394ca\n\n\n==\n Action to perform: list-docker\n \n Probing Host: unix:///var/run/docker.sock\n \n We found these containers: \n   \n \n[\nName\n=\nKeycloak, \nDescription\n=\nSingle Sign On facility, \nWebPath\n=\n/, \nWebPort\n=\n8280\n]\n\n   \n \n[\nName\n=\nPostgres, \nDescription\n=\nDatabase \nfor\n Keycloak, \nWebPath\n=\n, \nWebPort\n=]\n\n   \n \n[\nName\n=\nJenkins Master, \nDescription\n=\nJenkins - CI/Build server, \nWebPath\n=\n/jenkins, \nWebPort\n=\n8282\n]\n\n   \n \n[\nName\n=\nOpenDJ, \nDescription\n=\nLDAP server \nfor\n user management, \nWebPath\n=\n, \nWebPort\n=]\n\n   \n \n[\nName\n=\nCIDC Service Listing, \nDescription\n=\nThe container of this page, \nWebPath\n=\n, \nWebPort\n=]\n\n   \n \n[\nName\n=\nSonarQube, \nDescription\n=\nSonarQube - \nfor\n software quality scan, \nWebPath\n=\n/sonar, \nWebPort\n=\n8289\n]\n\n-----------------\n\n\n\n\n\n\nHost Listing\n\n\n1\n2\n3\ndocker run --rm --name util-temp abnamrocoesd/cicd-sandbox-util\n\\\n\n    cicd-util -action serve \n\\\n\n    -labelPrefix \nmy.labe.prefix.\n -namespace \nmyNamespace\n\n\n\n\n\nThis will result in something like this:\n\n\n\n\nHow to use\n\n\nThe util application has several actions you can choose from.\n\n\nTwo of those actions are related to the service listing: \nlist-docker\n and \nserve\n.\n\n\nThere are two parameters you will need to supply for both of these actions: \n-labelPrefix\n and \n-namespace\n.\n\n\n\n\nlabelPrefix\n: the prefix you use for the docker labels in the docker configuration\n\n\nnamespace\n: the namespace to filter on, this allows you to have separate sets of containers using the same label prefix but different namespace. Be sure to end in a \n.\n!\n\n\n\n\nThere are several optional parameters as well:\n\n\n\n\nname\n: the name of the service\n\n\ndescription\n: a short description of the service\n\n\nwebPath\n: the \npath\n to the application in the container that is useful to the user, leave blank if there's no such thing\n\n\nwebPort\n: the \nport\n for the \nwebPath\n, leave blank if there's no such thing\n\n\n\n\nDocker configuration\n\n\nAs briefly mentioned, you need to use labels within your docker configuration.\n\n\nAs the service listing is itself also a web application, you can also use it to list itself!\n\n\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13\n  \nservice-listing\n:\n \n    \nimage\n:\n \nabnamrocoesd/cicd-sandbox-util:latest\n\n    \nlabels\n:\n\n      \n-\n \nmy.label.prefix.namespace=wisent\n\n      \n-\n \nmy.label.prefix.name=\nCIDC Service Listing\n\n      \n-\n \nmy.label.prefix.description=\nThe container of this page\n\n      \n-\n \nmy.label.prefix.webPath=/\n\n      \n-\n \nmy.label.prefix.webPort=7777\n\n    \ncommand\n:\n \ncicd-util -action serve -labelPrefix \nmy.label.prefix.\n -namespace \nmyNamespace\n\n    \nrestart\n:\n \nalways\n\n    \nvolumes\n:\n \n[\n/var/run/docker.sock:/var/run/docker.sock\n]\n\n    \nports\n:\n\n      \n-\n \n7777:7777", 
+            "title": "Service Listing"
+        }, 
+        {
+            "location": "/service-listing/#service-listing", 
+            "text": "The service listing is there to help you visualize the running containers of your CICD sandbox.  It can do this in two ways, print the listing or host the listing as a html page.", 
+            "title": "Service Listing"
+        }, 
+        {
+            "location": "/service-listing/#print-listing", 
+            "text": "1\n2\n3\n4\n5 docker run --rm --name util-temp  \\ \n   -v /var/run/docker.sock:/var/run/docker.sock  \\ \n   abnamrocoesd/cicd-sandbox-util  \\ \n   cicd-util --action list-docker --namespace cidc \\ \n   --labelPrefix com.github.joostvdg.   This will result in the following response:   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12 ==   EXTERNAL_HOSTNAME =  ==  Hostname to use:  4189e58394ca  ==  Action to perform: list-docker\n   Probing Host: unix:///var/run/docker.sock\n   We found these containers: \n      [ Name = Keycloak,  Description = Single Sign On facility,  WebPath = /,  WebPort = 8280 ] \n      [ Name = Postgres,  Description = Database  for  Keycloak,  WebPath = ,  WebPort =] \n      [ Name = Jenkins Master,  Description = Jenkins - CI/Build server,  WebPath = /jenkins,  WebPort = 8282 ] \n      [ Name = OpenDJ,  Description = LDAP server  for  user management,  WebPath = ,  WebPort =] \n      [ Name = CIDC Service Listing,  Description = The container of this page,  WebPath = ,  WebPort =] \n      [ Name = SonarQube,  Description = SonarQube -  for  software quality scan,  WebPath = /sonar,  WebPort = 8289 ] \n-----------------", 
+            "title": "Print Listing"
+        }, 
+        {
+            "location": "/service-listing/#host-listing", 
+            "text": "1\n2\n3 docker run --rm --name util-temp abnamrocoesd/cicd-sandbox-util \\ \n    cicd-util -action serve  \\ \n    -labelPrefix  my.labe.prefix.  -namespace  myNamespace   \nThis will result in something like this:", 
+            "title": "Host Listing"
+        }, 
+        {
+            "location": "/service-listing/#how-to-use", 
+            "text": "The util application has several actions you can choose from.  Two of those actions are related to the service listing:  list-docker  and  serve .  There are two parameters you will need to supply for both of these actions:  -labelPrefix  and  -namespace .   labelPrefix : the prefix you use for the docker labels in the docker configuration  namespace : the namespace to filter on, this allows you to have separate sets of containers using the same label prefix but different namespace. Be sure to end in a  . !   There are several optional parameters as well:   name : the name of the service  description : a short description of the service  webPath : the  path  to the application in the container that is useful to the user, leave blank if there's no such thing  webPort : the  port  for the  webPath , leave blank if there's no such thing", 
+            "title": "How to use"
+        }, 
+        {
+            "location": "/service-listing/#docker-configuration", 
+            "text": "As briefly mentioned, you need to use labels within your docker configuration.  As the service listing is itself also a web application, you can also use it to list itself!   1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n10\n11\n12\n13    service-listing :  \n     image :   abnamrocoesd/cicd-sandbox-util:latest \n     labels : \n       -   my.label.prefix.namespace=wisent \n       -   my.label.prefix.name= CIDC Service Listing \n       -   my.label.prefix.description= The container of this page \n       -   my.label.prefix.webPath=/ \n       -   my.label.prefix.webPort=7777 \n     command :   cicd-util -action serve -labelPrefix  my.label.prefix.  -namespace  myNamespace \n     restart :   always \n     volumes :   [ /var/run/docker.sock:/var/run/docker.sock ] \n     ports : \n       -   7777:7777", 
+            "title": "Docker configuration"
+        }
+    ]
+}
