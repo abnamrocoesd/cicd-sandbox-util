@@ -37,7 +37,7 @@ func main() {
 	jenkinsUser := flag.String("jenkinsUser", "barbossa", "The username for Jenkins API")
 	jenkinsToken := flag.String("jenkinsToken", "JENKINS_ROCKS", "The user's token for Jenkins API")
 	jenkinsHost := flag.String("jenkinsHost", "localhost", "The host for Jenkins API")
-	jenkinsPort := flag.String("jenkinsPort :=", "8282", "The port for Jenkins API")
+	jenkinsPort := flag.String("jenkinsPort", "8080", "The port for Jenkins API")
 	jenkinsContextRoot := flag.String("jenkinsContextRoot :=", "/jenkins", "The context root of the Jenkins")
 	jenkinsJobUrl := flag.String("jenkinsJobUrl", "/configs/sonar", "The url of the jenkins job to trigger")
 	jenkinsJobParams := flag.String("jenkinsJobParams", "", "comma delimited key:value pairs")
