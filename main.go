@@ -41,6 +41,9 @@ func main() {
 	jenkinsContextRoot := flag.String("jenkinsContextRoot :=", "/jenkins", "The context root of the Jenkins")
 	jenkinsJobUrl := flag.String("jenkinsJobUrl", "/configs/sonar", "The url of the jenkins job to trigger")
 	jenkinsJobParams := flag.String("jenkinsJobParams", "", "comma delimited key:value pairs")
+	siteProtocol := flag.String("siteProtocol", "http://", "The protocol for the serve action, protocol for the links")
+	siteHost := flag.String("siteHost", "localhost", "The hostname for the serve action, hostname for the links")
+	siteTitle := flag.String("siteTitle", "CICD Sandbox Service Listing", "The title for the serve action")
 
 	serverPort := flag.String("serverPort", "7777", "The Port number of the webserver when action is 'serve'")
 	action := flag.String("action", "generate-config", `
@@ -159,7 +162,7 @@ func main() {
 		labelFilter := fmt.Sprintf("%s=%s", *labelPrefix+util.LabelNamespace, *namespace)
 		containersList, _ := dockerprobe.ContainerList(labelFilter, *dockerHost)
 		containers := dockerprobe.ContainerInfoList(containersList, *filterDockerRegister, *filterDockerRegisterName, *labelPrefix)
-		webserverData := &webserver.WebserverData{Containers: containers, Title: "CICD Sandbox Containers"}
+		webserverData := &webserver.WebserverData{Containers: containers, Title: *siteTitle, SiteHost: *siteHost, SiteProtocol: *siteProtocol}
 
 		c := make(chan bool)
 		go webserver.StartServer(*serverPort, webserverData, c)

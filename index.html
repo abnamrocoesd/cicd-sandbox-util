@@ -11,6 +11,8 @@
     <div class="jumbotron">
         <h1 class="display-3">{{.Title}}</h1>
         <div class="card-columns">
+            {{$protocol := .SiteProtocol}}
+            {{$host := .SiteHost}}
             {{range .Containers}}
             {{$name := .Name}}
             <div class="card border-info mb-3" style="max-width: 18rem;">
@@ -23,7 +25,7 @@
                     {{if (eq .WebPort "")}}
                         <p class="badge badge-warning">No url info</p>
                     {{else}}
-                        <a href="http://localhost:{{.WebPort}}{{.WebPath}}" class="btn btn-primary">Open</a>
+                        <a href="{{$protocol}}{{$host}}:{{.WebPort}}{{.WebPath}}" class="btn btn-primary">Open</a>
                     {{end}}
                 </div>
             </div>

@@ -15,8 +15,10 @@ import (
 
 // WebserverData is a wrapper for the page title and discovered docker Stacks
 type WebserverData struct {
-	Title      string
-	Containers []model.ContainerInfo
+	Title        string
+	SiteProtocol string
+	SiteHost     string
+	Containers   []model.ContainerInfo
 }
 
 // UpdateStacks allows you to update the stacks only
