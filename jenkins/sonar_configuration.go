@@ -29,9 +29,11 @@ func SonarConfiguration(sonarQubeConfig model.SonarQubeConfig, jobConfig model.J
 		panic("boom")
 	}
 
+	sonarQubeExternalUrl := sonarQubeConfig.ExternalHostname + ":" + sonarQubeConfig.ExternalPort + sonarQubeConfig.ContextRoot
 	parameters := url.Values{}
 	parameters.Add("job", jobConfig.JobUrl)
 	parameters.Add("sonar_token", token.Token)
+	parameters.Add("sonar_url", sonarQubeExternalUrl)
 	parameters.Add("cause", "Auto configuration")
 	parameters.Add("token", jobConfig.Token)
 	apiUrl.RawQuery = parameters.Encode()
